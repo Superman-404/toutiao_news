@@ -88,3 +88,15 @@ async def get_favorite_list(
     result = await db.execute(query)
     rows = result.all()
     return rows, total
+
+
+async def clear_user_favorite(db, user_id: int):
+    """
+    清空用户收藏
+    :param user_id: 用户ID
+    :param db: 数据库连接
+    :return:
+    """
+    stmt = delete(Favorite).where(Favorite.user_id == user_id)
+    result = await db.execute(stmt)
+    return result.rowcount or 0
