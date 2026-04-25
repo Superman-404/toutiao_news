@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, HTTPException, status
 
-from crud import news
 from config.db_config import AsyncSession, get_db
+from crud import news, news_cache
 
 # 创建APIRouter实例
 # prefix 路由前缀 (API 接口规范)
@@ -14,7 +14,7 @@ async def categories(skip: int = 0, limit: int = 100, db: AsyncSession = Depends
     # 首先要到数据库查到数据 才能在前端显示
     # curd 创建查询方法
     # 路由端 调用curd实现
-    category = await news.get_category(db, skip, limit)
+    category = await news_cache.get_category(db, skip, limit)
     return {
         "code": 200,
         "msg": "获取新闻分类成功",
